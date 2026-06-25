@@ -5,7 +5,6 @@
 	},
 	"rules": [
 		{ "rule": "inject_global_value", "identifier": "DEBUG", "value": false },
-		{ "rule": "inject_global_value", "identifier": "UI", "value": "Linoria" },
 		"convert_local_function_to_assign",
 		"convert_index_to_field",
 		"compute_expression",
