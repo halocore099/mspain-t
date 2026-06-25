@@ -109,6 +109,7 @@ shared.PlayerScripts = shared.LocalPlayer.PlayerScripts
 shared.Fly = require("Utils/Universal/Fly")
 shared.Twerk = require("Utils/Universal/Twerk")
 shared.ControlModule = require("Utils/Universal/ControlModule")
+shared.ESPLibraryLib = require("Utils/MS-ESP")
 
 local TextChannels = shared.TextChatService:FindFirstChild("TextChannels")
 if TextChannels and TextChannels:FindFirstChild("RBXGeneral") then
