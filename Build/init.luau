@@ -5,7 +5,7 @@
 
 -- You set the following string to "latest" (case insensitive), or any version tag
 -- on Wax's releases page (e.g. "0.4.1")
-local WaxVersion = "latest"
+local WaxVersion = "0.4.1"
 
 -------------------------------------------------------------------------------
 
