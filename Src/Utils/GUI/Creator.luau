@@ -1,13 +1,21 @@
 local UICreator = {}
 
-local repo = "https://raw.githubusercontent.com/mstudio45/LinoriaLib/refs/heads/main/"
+local ThemeManager
 
-shared.Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
-local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
-shared.SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+if _G.UI == "Rayfield" then
+    local RayfieldAdapter = require("Utils/GUI/RayfieldAdapter")
+    shared.Library, shared.SaveManager, ThemeManager = RayfieldAdapter.bootstrap()
+    -- shared.Toggles / shared.Options are populated by adapter widget builders
+else
+    local repo = "https://raw.githubusercontent.com/mstudio45/LinoriaLib/refs/heads/main/"
 
-shared.Toggles = getgenv().Linoria.Toggles
-shared.Options = getgenv().Linoria.Options
+    shared.Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+    ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
+    shared.SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+
+    shared.Toggles = getgenv().Linoria.Toggles
+    shared.Options = getgenv().Linoria.Options
+end
 
 getgenv()._internal_unload_mspain_t = function()
     getgenv().mspain_t_loading = false
