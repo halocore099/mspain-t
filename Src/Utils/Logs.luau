@@ -1,6 +1,4 @@
 local Logs = {
-    Debug = true, --or getgenv().mspaint_dev_mode,
-
     FirstTime = true,
     Folder = "mspaint/logs",
     FileName = nil
@@ -44,9 +42,10 @@ end
 function Logs:Log(...) Log("INFO", print, ...) end
 function Logs:Warn(...) Log("WARN", warn, ...) end
 function Logs:Error(...) Log("ERROR", error, ...) end
-function Logs:Debug(...) 
-    if not Logs.Debug then return end
-    Log("DEBUG", print, ...) 
+function Logs:Debug(...)
+    if _G.DEBUG then
+        Log("DEBUG", print, ...)
+    end
 end
 
 return Logs
