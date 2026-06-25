@@ -53,7 +53,7 @@ end
 --@Internal function
 --@Return #boolean. True if the pathfind algorithm was ran.
 local function HasAlreadyPathfind(nodesFolder: Folder): boolean
-    local hasPathfind = nodesFolder:GetAttribute("_mspaint_nodes_pathfind")
+    local hasPathfind = nodesFolder:GetAttribute("_mspain_t_nodes_pathfind")
     return hasPathfind
 end
 
@@ -109,10 +109,10 @@ local function PathfindGetNodes(room: Model): tSortedNodes | nil
     for _, node: Part in ipairs(nodeArray:GetChildren()) do
         --check for real nodes
         
-        local realNumber = node:GetAttribute("_mspaint_real_node")
+        local realNumber = node:GetAttribute("_mspain_t_real_node")
         if realNumber then table.insert(Nodes.real, node) continue end
         --check for fake nodes
-        local fakeNumber = node:GetAttribute("_mspaint_fake_node")
+        local fakeNumber = node:GetAttribute("_mspain_t_fake_node")
         if fakeNumber then table.insert(Nodes.fake, node) end
     end
 
@@ -188,17 +188,17 @@ local function HasAlreadyDestroyed(room: Model): boolean
         Script.Functions.Minecart.debug("[HasAlreadyDestroyed] No node has been found." )
         return
     end
-    local result = nodesFolder:GetAttribute("_mspaint_player_teleported") ~= nil
+    local result = nodesFolder:GetAttribute("_mspain_t_player_teleported") ~= nil
     Script.Functions.Minecart.debug("[HasAlreadyDestroyed] Destroyed: " .. tostring(result))
     return result
 end
 
 --The Minecart Teleport Function, this will be called with @NodeDestroy.
 --[[
-    Use "_mspaint_player_teleported" to track the status of the Teleport meaning that:
-    _mspaint_player_teleported = nil   ==> Node not destroyed
-    _mspaint_player_teleported = false ==> Node destroyed
-    _mspaint_player_teleported = true ==> Nodes was destroyed + Player sucessfully teleported.
+    Use "_mspain_t_player_teleported" to track the status of the Teleport meaning that:
+    _mspain_t_player_teleported = nil   ==> Node not destroyed
+    _mspain_t_player_teleported = false ==> Node destroyed
+    _mspain_t_player_teleported = true ==> Nodes was destroyed + Player sucessfully teleported.
 ]]
 local MinecartFound = false
 function Script.Functions.Minecart.Teleport(room: Model)
@@ -212,10 +212,10 @@ function Script.Functions.Minecart.Teleport(room: Model)
         local nodesList = PathfindGetNodes(room)
         if not nodesList then return end
         NodeDestroy(nodesList)
-        room:SetAttribute("_mspaint_player_teleported", false)
+        room:SetAttribute("_mspain_t_player_teleported", false)
     end
 
-    local hasAlreadyTeleported = room:GetAttribute("_mspaint_player_teleported")
+    local hasAlreadyTeleported = room:GetAttribute("_mspain_t_player_teleported")
     Script.Functions.Minecart.debug("[Teleport] Player already teleported:" .. tostring(hasAlreadyTeleported))
 
     --Setup minecart teleport if room 45 is added.
@@ -223,14 +223,14 @@ function Script.Functions.Minecart.Teleport(room: Model)
         task.spawn(function()
 
             --Delete old notification
-            if workspace:FindFirstChild("_internal_mspaint_minecart_teleport") then 
-                workspace:FindFirstChild("_internal_mspaint_minecart_teleport"):Destroy() 
+            if workspace:FindFirstChild("_internal_mspain_t_minecart_teleport") then 
+                workspace:FindFirstChild("_internal_mspain_t_minecart_teleport"):Destroy() 
             end
 
             local progressPart = Instance.new("Part", workspace) do
                 progressPart.Anchored = true
                 progressPart.CanCollide = false
-                progressPart.Name = "_internal_mspaint_minecart_teleport"
+                progressPart.Name = "_internal_mspain_t_minecart_teleport"
                 progressPart.Transparency = 1
             end
             shared.Notify:Alert({
@@ -267,7 +267,7 @@ function Script.Functions.Minecart.Teleport(room: Model)
 
         Script.Functions.Minecart.debug("[Teleport] MinecartRig Found! Initializing Teleport...")
 
-        if workspace:FindFirstChild("_internal_mspaint_minecart_teleport") then workspace:FindFirstChild("_internal_mspaint_minecart_teleport"):Destroy() end
+        if workspace:FindFirstChild("_internal_mspain_t_minecart_teleport") then workspace:FindFirstChild("_internal_mspain_t_minecart_teleport"):Destroy() end
         shared.Notify:Alert({
             Title = "Minecart Teleport",
             Description = "Minecart teleport started. Enjoy the ride!",
@@ -292,7 +292,7 @@ function Script.Functions.Minecart.Teleport(room: Model)
                     minecart.PrimaryPart.CFrame = getLastNode.CFrame
                 end
             until GetRoom:WaitForChild("Door"):GetAttribute("Opened")
-            GetRoom:SetAttribute("_mspaint_player_teleported", true)
+            GetRoom:SetAttribute("_mspain_t_player_teleported", true)
 
             startRoomNumber += 1
             MinecartFound = true
@@ -516,9 +516,9 @@ function Script.Functions.Minecart.Pathfind(room: Model, forcePathfind: boolean)
         fake = sortNodes(fakeNodes, false)
     }
 
-    nodesFolder:SetAttribute("_mspaint_nodes_pathfind", true)
-    PathfindSetNodes(nodesList.real, "_mspaint_real_node")
-    PathfindSetNodes(nodesList.fake, "_mspaint_fake_node")
+    nodesFolder:SetAttribute("_mspain_t_nodes_pathfind", true)
+    PathfindSetNodes(nodesList.real, "_mspain_t_real_node")
+    PathfindSetNodes(nodesList.fake, "_mspain_t_fake_node")
     --Call any feature that requires the pathfind nodes--
 
     Script.Functions.Minecart.DrawNodes(room)

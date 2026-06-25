@@ -263,7 +263,7 @@ elseif Script.IsMines then
             local progressPart = Instance.new("Part", shared.Workspace) do
                 progressPart.Anchored = true
                 progressPart.CanCollide = false
-                progressPart.Name = "_internal_mspaint_acbypassprogress"
+                progressPart.Name = "_internal_mspain_t_acbypassprogress"
                 progressPart.Transparency = 1
             end
 
@@ -300,7 +300,7 @@ elseif Script.IsMines then
                 end
             end
         else
-            if workspace:FindFirstChild("_internal_mspaint_acbypassprogress") then workspace:FindFirstChild("_internal_mspaint_acbypassprogress"):Destroy() end
+            if workspace:FindFirstChild("_internal_mspain_t_acbypassprogress") then workspace:FindFirstChild("_internal_mspain_t_acbypassprogress"):Destroy() end
 
             for _, ladderEsp in pairs(Script.ESPTable.None) do
                 ladderEsp.Destroy()
@@ -444,18 +444,18 @@ elseif Script.IsBackdoor then
 
     Toggles.AntiHasteJumpscare:OnChanged(function(value)
         local clientRemote = shared.ReplicatedStorage.FloorReplicated.ClientRemote
-        local internal_temp_mspaint = clientRemote:FindFirstChild("_mspaint")
+        local internal_temp_mspain_t = clientRemote:FindFirstChild("_mspain_t")
         
-        if not internal_temp_mspaint then internal_temp_mspaint = Instance.new("Folder", clientRemote); internal_temp_mspaint.Name = "_mspaint" end
+        if not internal_temp_mspain_t then internal_temp_mspain_t = Instance.new("Folder", clientRemote); internal_temp_mspain_t.Name = "_mspain_t" end
 
         if value then
             for i,v in pairs(clientRemote.Haste:GetChildren()) do
                 if v:IsA("RemoteEvent") then continue end
 
-                v.Parent = internal_temp_mspaint
+                v.Parent = internal_temp_mspain_t
             end
         else
-            for i,v in pairs(internal_temp_mspaint:GetChildren()) do
+            for i,v in pairs(internal_temp_mspain_t:GetChildren()) do
                 v.Parent = clientRemote.Haste
             end
         end
@@ -540,19 +540,19 @@ elseif Script.IsRooms then
         return workspace.CurrentRooms[Script.LatestRoom.Value].RoomExit
     end
 
-    local _internal_mspaint_pathfinding_nodes = Instance.new("Folder", shared.Workspace) do
-        _internal_mspaint_pathfinding_nodes.Name = "_internal_mspaint_pathfinding_nodes"
+    local _internal_mspain_t_pathfinding_nodes = Instance.new("Folder", shared.Workspace) do
+        _internal_mspain_t_pathfinding_nodes.Name = "_internal_mspain_t_pathfinding_nodes"
     end
 
-    local _internal_mspaint_pathfinding_block = Instance.new("Folder", shared.Workspace) do
-        _internal_mspaint_pathfinding_block.Name = "_internal_mspaint_pathfinding_block"
+    local _internal_mspain_t_pathfinding_block = Instance.new("Folder", shared.Workspace) do
+        _internal_mspain_t_pathfinding_block.Name = "_internal_mspain_t_pathfinding_block"
     end
 
     Toggles.ShowAutoRoomsPathNodes:OnChanged(function(value)
-        for _, node in pairs(_internal_mspaint_pathfinding_nodes:GetChildren()) do
+        for _, node in pairs(_internal_mspain_t_pathfinding_nodes:GetChildren()) do
             node.Transparency = value and 0.5 or 1
         end
-        for _, nodeBlock in pairs(_internal_mspaint_pathfinding_block:GetChildren()) do
+        for _, nodeBlock in pairs(_internal_mspain_t_pathfinding_block:GetChildren()) do
             nodeBlock.Transparency = value and 0.9 or 1
         end
     end)
@@ -580,8 +580,8 @@ elseif Script.IsRooms then
         local hasResetFailsafe = false
 
         local function nodeCleanup()
-            _internal_mspaint_pathfinding_nodes:ClearAllChildren()
-            _internal_mspaint_pathfinding_block:ClearAllChildren()
+            _internal_mspain_t_pathfinding_nodes:ClearAllChildren()
+            _internal_mspain_t_pathfinding_block:ClearAllChildren()
             hasResetFailsafe = true
         end
 
@@ -599,11 +599,11 @@ elseif Script.IsRooms then
             local lastRoomValue = 0
 
             local function createNewBlockedPoint(point: PathWaypoint)
-                local block = Instance.new("Part", _internal_mspaint_pathfinding_block)
+                local block = Instance.new("Part", _internal_mspain_t_pathfinding_block)
                 local pathMod = Instance.new("PathfindingModifier", block)
                 pathMod.Label = "_ms_pathBlock"
 
-                block.Name = "_mspaint_blocked_path"
+                block.Name = "_mspain_t_blocked_path"
                 block.Shape = Enum.PartType.Block
 
                 local sizeY = 10
@@ -621,7 +621,7 @@ elseif Script.IsRooms then
                 local pathfindingGoal = Script.Functions.GetAutoRoomsPathfindingGoal()
 
                 if Script.LatestRoom.Value ~= lastRoomValue then
-                    _internal_mspaint_pathfinding_block:ClearAllChildren()
+                    _internal_mspain_t_pathfinding_block:ClearAllChildren()
                     lastRoomValue = Script.LatestRoom.Value
                 end
                 
@@ -673,10 +673,10 @@ elseif Script.IsRooms then
                         Description = "Computed path successfully with " .. waypointAmount .. " waypoints!",
                     }, Toggles.AutoRoomsDebug.Value)
 
-                    _internal_mspaint_pathfinding_nodes:ClearAllChildren()
+                    _internal_mspain_t_pathfinding_nodes:ClearAllChildren()
 
                     for i, waypoint in pairs(waypoints) do
-                        local node = Instance.new("Part", _internal_mspaint_pathfinding_nodes) do
+                        local node = Instance.new("Part", _internal_mspain_t_pathfinding_nodes) do
                             node.Name = "_internal_node_" .. i
                             node.Size = Vector3.new(1, 1, 1)
                             node.Position = waypoint.Position
@@ -706,8 +706,8 @@ elseif Script.IsRooms then
                                     nodeCleanup()
                                     break
                                 else
-                                    if _internal_mspaint_pathfinding_nodes:FindFirstChild("_internal_node_" .. i) then
-                                        _internal_mspaint_pathfinding_nodes:FindFirstChild("_internal_node_" .. i):Destroy()
+                                    if _internal_mspain_t_pathfinding_nodes:FindFirstChild("_internal_node_" .. i) then
+                                        _internal_mspain_t_pathfinding_nodes:FindFirstChild("_internal_node_" .. i):Destroy()
                                     end
                                 end
 
@@ -746,8 +746,8 @@ elseif Script.IsRooms then
                             nodeCleanup()
                             break
                         else
-                            if _internal_mspaint_pathfinding_nodes:FindFirstChild("_internal_node_" .. i) then
-                                _internal_mspaint_pathfinding_nodes:FindFirstChild("_internal_node_" .. i):Destroy()
+                            if _internal_mspain_t_pathfinding_nodes:FindFirstChild("_internal_node_" .. i) then
+                                _internal_mspain_t_pathfinding_nodes:FindFirstChild("_internal_node_" .. i):Destroy()
                             end
                         end
 
@@ -767,7 +767,7 @@ elseif Script.IsRooms then
                     shared.Notify:Alert({
                         Title = "Auto Rooms",
                         Description = "You have reached A-1000",
-                        Reason = "A-1000 reached by mspaint autorooms",
+                        Reason = "A-1000 reached by mspain-t autorooms",
                     })
 
                     break

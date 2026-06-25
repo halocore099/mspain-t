@@ -334,7 +334,7 @@ function Script.Functions.SetupCharacterConnection(newCharacter)
 
                     Time = 7
                 })
-                if workspace:FindFirstChild("_internal_mspaint_acbypassprogress") then workspace:FindFirstChild("_internal_mspaint_acbypassprogress"):Destroy() end
+                if workspace:FindFirstChild("_internal_mspain_t_acbypassprogress") then workspace:FindFirstChild("_internal_mspain_t_acbypassprogress"):Destroy() end
             end)
         end
 

@@ -5,7 +5,7 @@
 -- Use: copy this file into your Macsploit Workspace (or paste it into
 -- Macsploit's editor) and execute.
 --
--- Output: ~/Documents/Macsploit Workspace/mspaint-t-dumps/*.txt
+-- Output: ~/Documents/Macsploit Workspace/mspain-t-t-dumps/*.txt
 -- Each file is an indented tree of instance names + ClassNames so you can
 -- diff against what Src/Places/{Loaders,Utils}/Doors/Doors/*.luau expects.
 
@@ -14,7 +14,7 @@ local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
 
-local DUMP_FOLDER = "mspaint-t-dumps"
+local DUMP_FOLDER = "mspain-t-t-dumps"
 local MAX_CHILDREN_PER_NODE = 200 -- prevent runaway dumps on huge models
 
 if typeof(isfolder) == "function" and not isfolder(DUMP_FOLDER) then

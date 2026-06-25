@@ -83,13 +83,13 @@ Script.WaypointsMenu = Script.Client:WaitForChild("GUI"):WaitForChild("GuiMenus"
 Script.GamePassClockVisible = Script.Calendar:WaitForChild("Gamepass_Clock").Visible
 
 --// Functions \\--
-Script._mspaint_custom_captions = Instance.new("ScreenGui") do
-    local Frame = Instance.new("Frame", Script._mspaint_custom_captions)
+Script._mspain_t_custom_captions = Instance.new("ScreenGui") do
+    local Frame = Instance.new("Frame", Script._mspain_t_custom_captions)
     local TextLabel = Instance.new("TextLabel", Frame)
     local UITextSizeConstraint = Instance.new("UITextSizeConstraint", TextLabel)
 
-    Script._mspaint_custom_captions.Parent = shared.ReplicatedStorage
-    Script._mspaint_custom_captions.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Script._mspain_t_custom_captions.Parent = shared.ReplicatedStorage
+    Script._mspain_t_custom_captions.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     Frame.AnchorPoint = Vector2.new(0.5, 0.5)
     Frame.BackgroundColor3 = shared.Library.MainColor
@@ -120,20 +120,20 @@ Script._mspaint_custom_captions = Instance.new("ScreenGui") do
     UITextSizeConstraint.MaxTextSize = 35
 
     function Script.Functions.HideCaptions()
-        Script._mspaint_custom_captions.Parent = shared.ReplicatedStorage
+        Script._mspain_t_custom_captions.Parent = shared.ReplicatedStorage
     end
 
     local CaptionsLastUsed = os.time()
     function Script.Functions.Captions(caption: string)
         CaptionsLastUsed = os.time()
 
-        if Script._mspaint_custom_captions.Parent == shared.ReplicatedStorage then
+        if Script._mspain_t_custom_captions.Parent == shared.ReplicatedStorage then
             local success = pcall(function()
-                Script._mspaint_custom_captions.Parent = if gethui then gethui() else shared.CoreGui
+                Script._mspain_t_custom_captions.Parent = if gethui then gethui() else shared.CoreGui
             end)
 
             if not success then
-                Script._mspaint_custom_captions.Parent = shared.PlayerGui
+                Script._mspain_t_custom_captions.Parent = shared.PlayerGui
             end 
         end
         
@@ -187,10 +187,10 @@ function Script.Functions.UpdateBloxstrapRPC()
     if not wax.shared.BloxstrapRPC then return end
     
     wax.shared.BloxstrapRPC.SetRichPresence({
-        details = "Playing 3008 [ mspaint v2 - DISCONTINUED ]",
+        details = "Playing 3008 [ mspain`t ]",
         state = string.lower(Script.CurrentDay.Text):gsub("^%l", string.upper),
         largeImage = {
-            hoverText = "Using mspaint v2 - DISCONTINUED"
+            hoverText = "Using mspain`t"
         },
         smallImage = {
             assetId = 6925817108,
@@ -241,7 +241,7 @@ if wax.shared.ExecutorSupport["hookmetamethod"] and wax.shared.ExecutorSupport["
             local actionType = args[1]
             local actionData = args[2]
 
-            if actionType == "Store" and args[3] ~= "_internal_origin_mspaint" then
+            if actionType == "Store" and args[3] ~= "_internal_origin_mspain_t" then
                 if Toggles.InfiniteInventory.Value and wax.shared.ExecutorSupport["require"] then
                     require(Script.ToolSystem).GlobalRenderStep = function() end
                     local parentedTools = {}
@@ -256,7 +256,7 @@ if wax.shared.ExecutorSupport["hookmetamethod"] and wax.shared.ExecutorSupport["
                     task.wait()
                     local modelName = actionData.Model.Name
     
-                    Script.Action:InvokeServer("Store", actionData, "_internal_origin_mspaint")
+                    Script.Action:InvokeServer("Store", actionData, "_internal_origin_mspain_t")
                     
                     local newTool = shared.LocalPlayer.Backpack:WaitForChild(modelName)
     
@@ -364,4 +364,4 @@ shared.Library:OnUnload(function()
     end
 end)
 
-getgenv().mspaint_loaded = true
+getgenv().mspain_t_loaded = true

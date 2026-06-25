@@ -806,7 +806,7 @@ if Script.IsBackdoor then
             haste_incoming_progress = Instance.new("Part", shared.Workspace); do
                 haste_incoming_progress.Anchored = true
                 haste_incoming_progress.CanCollide = false
-                haste_incoming_progress.Name = "_internal_mspaint_haste"
+                haste_incoming_progress.Name = "_internal_mspain_t_haste"
                 haste_incoming_progress.Transparency = 1
             end
 

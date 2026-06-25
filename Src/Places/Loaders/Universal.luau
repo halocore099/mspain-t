@@ -24,10 +24,10 @@ function Script.Functions.UpdateBloxstrapRPC()
     if not wax.shared.BloxstrapRPC then return end
 
     wax.shared.BloxstrapRPC.SetRichPresence({
-        details = "Playing " .. Script.GameName .. " [ mspaint v2 - DISCONTINUED ]",
+        details = "Playing " .. Script.GameName .. " [ mspain-t ]",
         state = #shared.Players:GetPlayers() .. " players in the server",
         largeImage = {
-            hoverText = "Using mspaint v2 - DISCONTINUED"
+            hoverText = "Using mspain-t"
         },
         smallImage = {
             assetId = 6925817108,
@@ -171,4 +171,4 @@ shared.Library:OnUnload(function()
     shared.Twerk:Disable()
 end)
 
-getgenv().mspaint_loaded = true
+getgenv().mspain_t_loaded = true

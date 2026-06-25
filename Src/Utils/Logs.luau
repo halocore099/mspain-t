@@ -1,6 +1,6 @@
 local Logs = {
     FirstTime = true,
-    Folder = "mspaint/logs",
+    Folder = "mspain-t/logs",
     FileName = nil
 }
 Logs.FileHelper = wax.shared.FileHelper.new(Logs.Folder)

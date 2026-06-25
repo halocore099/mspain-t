@@ -1,13 +1,13 @@
 # mspain`t
 > [!IMPORTANT]
-> I am NOT affiliated with mspaint (hence why i am mspain`t)
+> I am NOT affiliated with mspain-t (hence why i am mspain`t)
 
 A decent script hub that *was* free and open source, and now being modifed by me, in progress
 
-in the meantime, checkout the actual updated mspaint:
+in the meantime, checkout the actual updated mspain-t:
 **Links**:
-- [🌐 Website](https://www.mspaint.cc/)
-- [💬 Discord](https://discord.gg/mspaint)
+- [🌐 Website](https://www.mspain-t.cc/)
+- [💬 Discord](https://discord.gg/mspain-t)
 
 
 

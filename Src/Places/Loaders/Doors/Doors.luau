@@ -1,6 +1,6 @@
 --// Loading Wait \\--
 if shared.LocalPlayer and shared.LocalPlayer.PlayerGui:FindFirstChild("LoadingUI") and shared.LocalPlayer.PlayerGui.LoadingUI.Enabled then
-    print("[mspaint] Waiting for game to load...")
+    print("[mspain-t] Waiting for game to load...")
     repeat task.wait() until not shared.LocalPlayer.PlayerGui:FindFirstChild("LoadingUI") and true or not shared.LocalPlayer.PlayerGui.LoadingUI.Enabled
 end
 
@@ -340,16 +340,16 @@ Script.Tracks = {
 }
 
 function Script.Functions.Warn(message: string)
-    warn("WARN - mspaint:", message)
+    warn("WARN - mspain-t:", message)
 end
 
-Script._mspaint_custom_captions = Instance.new("ScreenGui"); do
-    local Frame = Instance.new("Frame", Script._mspaint_custom_captions)
+Script._mspain_t_custom_captions = Instance.new("ScreenGui"); do
+    local Frame = Instance.new("Frame", Script._mspain_t_custom_captions)
     local TextLabel = Instance.new("TextLabel", Frame)
     local UITextSizeConstraint = Instance.new("UITextSizeConstraint", TextLabel)
 
-    Script._mspaint_custom_captions.Parent = shared.ReplicatedStorage
-    Script._mspaint_custom_captions.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Script._mspain_t_custom_captions.Parent = shared.ReplicatedStorage
+    Script._mspain_t_custom_captions.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     Frame.AnchorPoint = Vector2.new(0.5, 0.5)
     Frame.BackgroundColor3 = shared.Library.MainColor
@@ -384,7 +384,7 @@ Script._mspaint_custom_captions = Instance.new("ScreenGui"); do
     
     function Script.Functions.HideCaptions()
         IsCaptionHidden = true
-        Script._mspaint_custom_captions.Parent = shared.ReplicatedStorage
+        Script._mspain_t_custom_captions.Parent = shared.ReplicatedStorage
     end
 
     function Script.Functions.Captions(caption: string)
@@ -392,11 +392,11 @@ Script._mspaint_custom_captions = Instance.new("ScreenGui"); do
 
         if IsCaptionHidden then
             local success = pcall(function()
-                Script._mspaint_custom_captions.Parent = if gethui then gethui() else shared.CoreGui
+                Script._mspain_t_custom_captions.Parent = if gethui then gethui() else shared.CoreGui
             end)
 
             if not success then
-                Script._mspaint_custom_captions.Parent = shared.PlayerGui
+                Script._mspain_t_custom_captions.Parent = shared.PlayerGui
             end 
 
             IsCaptionHidden = false
@@ -465,11 +465,11 @@ function Script.Functions.UpdateRPC()
     end
 
     wax.shared.BloxstrapRPC.SetRichPresence({
-        details = "Playing DOORS [ mspaint v2 - DISCONTINUED ]",
+        details = "Playing DOORS [ mspain-t ]",
         state = roomNumberPrefix .. prettifiedRoomNumber .. " (" .. if Script.PrettyFloorName[Script.Floor.Value] then Script.PrettyFloorName[Script.Floor.Value] else ("The " .. Script.Floor.Value)  .. ")",
         largeImage = {
             assetId = Script.FloorImages[Script.Floor.Value] or 16875079348,
-            hoverText = "Using mspaint v2 - DISCONTINUED"
+            hoverText = "Using mspain-t"
         },
         smallImage = {
             assetId = 6925817108,
@@ -1551,33 +1551,33 @@ shared.Library:OnUnload(function()
 
     if Script.IsBackdoor then
         local clientRemote = Script.FloorReplicated.ClientRemote
-        local internal_temp_mspaint = clientRemote:FindFirstChild("_mspaint")
+        local internal_temp_mspain_t = clientRemote:FindFirstChild("_mspain_t")
 
-        if internal_temp_mspaint and #internal_temp_mspaint:GetChildren() ~= 0 then
-            for i,v in pairs(internal_temp_mspaint:GetChildren()) do
+        if internal_temp_mspain_t and #internal_temp_mspain_t:GetChildren() ~= 0 then
+            for i,v in pairs(internal_temp_mspain_t:GetChildren()) do
                 v.Parent = clientRemote.Haste
             end
         end
 
-        internal_temp_mspaint:Destroy()
+        internal_temp_mspain_t:Destroy()
     end
 
     if Script.IsMines then
-        local acbypasspart = workspace:FindFirstChild("_internal_mspaint_acbypassprogress")
+        local acbypasspart = workspace:FindFirstChild("_internal_mspain_t_acbypassprogress")
         if acbypasspart then acbypasspart:Destroy() end
     end
 
     if Script.IsRooms then
-        if workspace:FindFirstChild("_internal_mspaint_pathfinding_nodes") then
-            workspace:FindFirstChild("_internal_mspaint_pathfinding_nodes"):Destroy()
+        if workspace:FindFirstChild("_internal_mspain_t_pathfinding_nodes") then
+            workspace:FindFirstChild("_internal_mspain_t_pathfinding_nodes"):Destroy()
         end
-        if workspace:FindFirstChild("_internal_mspaint_pathfinding_block") then
-            workspace:FindFirstChild("_internal_mspaint_pathfinding_block"):Destroy()
+        if workspace:FindFirstChild("_internal_mspain_t_pathfinding_block") then
+            workspace:FindFirstChild("_internal_mspain_t_pathfinding_block"):Destroy()
         end
     end
 
-    if Script._mspaint_custom_captions then
-        Script._mspaint_custom_captions:Destroy()
+    if Script._mspain_t_custom_captions then
+        Script._mspain_t_custom_captions:Destroy()
     end
 
     if Script.Collision and not (Toggles.CollisionOffsetGodmode.Value and (shared.Library.IsMobile or Options.CollisionOffsetGodmodeKey:GetState())) then
@@ -1639,4 +1639,4 @@ shared.Library:OnUnload(function()
 end)
 
 shared.SubFolder = Script.Floor.Value
-getgenv().mspaint_loaded = true
+getgenv().mspain_t_loaded = true

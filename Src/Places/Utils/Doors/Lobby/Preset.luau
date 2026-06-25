@@ -4,7 +4,7 @@ local Options = shared.Options
 
 --// Variables \\--
 local Script = shared.Script
-Script.PresetHelper = wax.shared.FileHelper.new("mspaint/doors/presets")
+Script.PresetHelper = wax.shared.FileHelper.new("mspain-t/doors/presets")
 Script.ElevatorPresetData = {}
 Script.ElevatorPresets = {}
 

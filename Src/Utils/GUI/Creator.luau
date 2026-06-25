@@ -9,15 +9,15 @@ shared.SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))(
 shared.Toggles = getgenv().Linoria.Toggles
 shared.Options = getgenv().Linoria.Options
 
-getgenv()._internal_unload_mspaint = function()
-    getgenv().mspaint_loading = false
-    getgenv().mspaint_loaded = false
+getgenv()._internal_unload_mspain_t = function()
+    getgenv().mspain_t_loading = false
+    getgenv().mspain_t_loaded = false
     task.spawn(shared.Library.Unload)
 end
 
 function UICreator:CreateWindow()
     local Window = shared.Library:CreateWindow({
-        Title = "mspaint v2 - OUTDATED! | " .. shared.ScriptName,
+        Title = "mspain-t | " .. shared.ScriptName,
         Center = true,
         AutoShow = true,
         Resizable = true,
@@ -50,8 +50,8 @@ function UICreator:CreateWindow()
             connection:Disconnect()
         end
 
-        getgenv().mspaint_loading = false
-        getgenv().mspaint_loaded = false
+        getgenv().mspain_t_loading = false
+        getgenv().mspain_t_loaded = false
         shared.Library.Unloaded = true
         print("Unloaded!")
     end)
@@ -63,40 +63,16 @@ function UICreator:CreateTimeoutInfoTab()
     local ErrorTab = shared.Window:AddTab("Error")
     ErrorTab:UpdateWarningBox({
         Visible = true,
-        Title = "mspaint - RUNTIME ERROR",
-        Text = "mspaint was unable to load in time (<b>ERROR: timeout</b>)\n\n<i>keep in mind that this is an outdated version and it is more likely that the fix is inside of the updated version.</i>"
+        Title = "mspain-t - RUNTIME ERROR",
+        Text = "mspain-t was unable to load in time (<b>ERROR: timeout</b>)"
     })
 
-    local ResourcesGroup = ErrorTab:AddLeftGroupbox("Resources")
-    local ErrorInfoGroup = ErrorTab:AddRightGroupbox("Error Info")
-    ResourcesGroup:AddLabel("Discord Server: https://discord.gg/mspaint")
-    ResourcesGroup:AddDivider()
-    ResourcesGroup:AddButton("Join Discord", function()
-        local Inviter = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Discord%20Inviter/Source.lua"))()
-        Inviter.Join("https://discord.com/invite/cfyMptntHr")
-        Inviter.Prompt({
-            name = "mspaint",
-            invite = "https://discord.com/invite/cfyMptntHr",
-        })
-    end):AddButton("Copy Link", function()
-        if setclipboard then
-            setclipboard("https://discord.com/invite/cfyMptntHr")
-            shared.Library:Notify("Copied discord link to clipboard!")
-        else
-            shared.Library:Notify("Discord link: https://discord.com/invite/cfyMptntHr", 10)
-        end
-    end)
-
-    ErrorInfoGroup:AddLabel("Timeout error usually means the game's owner has moved something to a different location which breaks the code that has already been written.\n\nDue to the fact that this open source version is discontinued, we will not be adding fixes.", true)
+    local ErrorInfoGroup = ErrorTab:AddLeftGroupbox("Error Info")
+    ErrorInfoGroup:AddLabel("Timeout error usually means the game's owner has moved something to a different location which breaks the code that was already written. Check the Self-Test tab in a debug build to attribute the failure.", true)
 end
 
 function UICreator:CreateSettingsTab()
     local SettingsTab = shared.Window:AddTab("UI Settings")
-    SettingsTab:UpdateWarningBox({
-        Visible = true,
-        Title = "WARNING",
-        Text = "You are using a deprecated version of mspaint, to get the new version please join our discord server via .gg/mspaint"
-    })
 
     local MenuGroup = SettingsTab:AddLeftGroupbox("Menu")
     local CreditsGroup = SettingsTab:AddRightGroupbox("Credits")
@@ -106,28 +82,12 @@ function UICreator:CreateSettingsTab()
     MenuGroup:AddToggle("ShowCustomCursor", {Text = "Custom Cursor", Default = true, Callback = function(Value) shared.Library.ShowCustomCursor = Value end})
     MenuGroup:AddDivider()
     MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
-    MenuGroup:AddButton("Join Discord", function()
-        local Inviter = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Discord%20Inviter/Source.lua"))()
-        Inviter.Join("https://discord.com/invite/cfyMptntHr")
-        Inviter.Prompt({
-            name = "mspaint",
-            invite = "https://discord.com/invite/cfyMptntHr",
-        })
-    end):AddButton("Copy Link", function()
-        if setclipboard then
-            setclipboard("https://discord.com/invite/cfyMptntHr")
-            shared.Library:Notify("Copied discord link to clipboard!")
-        else
-            shared.Library:Notify("Discord link: https://discord.com/invite/cfyMptntHr", 10)
-        end
-    end)
     MenuGroup:AddButton("Unload", function() shared.Library:Unload() end)
 
-    CreditsGroup:AddLabel("Developers:")
-    CreditsGroup:AddLabel("upio - owner")
-    CreditsGroup:AddLabel("deividcomsono - main script dev")
-    CreditsGroup:AddLabel("mstudio45")
-    CreditsGroup:AddLabel("bacalhauz")
+    CreditsGroup:AddLabel("mspain`t — fork of mspaint")
+    CreditsGroup:AddDivider()
+    CreditsGroup:AddLabel("Original mspaint authors:")
+    CreditsGroup:AddLabel("upio, deividcomsono, mstudio45, bacalhauz")
 
     shared.Library.ToggleKeybind = shared.Options.MenuKeybind
 
@@ -136,7 +96,7 @@ function UICreator:CreateSettingsTab()
 
     shared.SaveManager:IgnoreThemeSettings()
 
-    shared.SaveManager:SetFolder("mspaint/" .. string.lower(shared.ScriptLoader))
+    shared.SaveManager:SetFolder("mspain-t/" .. string.lower(shared.ScriptLoader))
     if shared.SubFolder then
         shared.SaveManager:SetSubFolder(shared.SubFolder)
     end
@@ -150,7 +110,9 @@ function UICreator:CreateSettingsTab()
         if not shared.Toggles.ExecuteOnTeleport.Value or getgenv().queued_to_teleport then return end
 
         getgenv().queued_to_teleport = true
-        queue_on_teleport([[ loadstring(game:HttpGet("https://github.com/notpoiu/mspaint/releases/latest/download/Script.luau"))() ]])
+        -- Re-bootstrap from the local workspace bundle. Replace with a release-URL
+        -- loadstring once you publish the fork as a GitHub release.
+        queue_on_teleport([[ if typeof(readfile) == "function" then loadstring(readfile("mspain-t.luau"))() end ]])
     end))
 
     return SettingsTab
@@ -244,7 +206,7 @@ local function formatResults(results: { any }, elapsed: number): string
         end
     end
 
-    table.insert(lines, "=== mspaint-t self-test ===")
+    table.insert(lines, "=== mspain-t-t self-test ===")
     table.insert(lines, string.format("Game: %s   PlaceId: %d", shared.ScriptName or "?", game.PlaceId))
     table.insert(lines, string.format("Elapsed: %.1fs   Total: %d   OK: %d   ERROR: %d   SKIPPED: %d", elapsed, #results, ok, err, skipped))
     table.insert(lines, "")
@@ -312,7 +274,7 @@ function UICreator:CreateSelfTestTab()
             end)
 
             local report = formatResults(results, elapsed)
-            local filename = string.format("mspaint-t-selftest-%s.txt", os.date("%Y%m%d-%H%M%S"))
+            local filename = string.format("mspain-t-t-selftest-%s.txt", os.date("%Y%m%d-%H%M%S"))
 
             if typeof(writefile) == "function" then
                 pcall(writefile, filename, report)

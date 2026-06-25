@@ -1,7 +1,7 @@
-if getgenv().mspaint_loading then print("[mspaint] Loading stopped. (ERROR: Loading)"); return end
-if getgenv().mspaint_loaded then print("[mspaint] Loading stopped. (ERROR: Already loaded)"); return end
+if getgenv().mspain_t_loading then print("[mspain-t] Loading stopped. (ERROR: Loading)"); return end
+if getgenv().mspain_t_loaded then print("[mspain-t] Loading stopped. (ERROR: Already loaded)"); return end
 
-getgenv().mspaint_loading = true
+getgenv().mspain_t_loading = true
 
 --// Loading Wait \\--
 if not game:IsLoaded() then game.Loaded:Wait() end
@@ -43,7 +43,7 @@ if not wax.shared.FileHelper then
     wax.shared.FileHelper = require("Utils/FileHelper")
 end
 
---// mspaint Loader \\--
+--// mspain-t Loader \\--
 if not wax.shared.GotPlace then
     wax.shared.GotPlace = true
 
@@ -140,11 +140,4 @@ end
 UICreator:CreateSettingsTab()
 require("Utils/GUI/Addons")
 
-shared.Notify:Alert({
-    Title = "OUTDATED",
-    Description = "You are using a old version of mspaint that is no longer maintained.\nTo get the new loadstring join the discord!\n -> discord.gg/mspaint <-",
-    Time = 30,
-    ForceLinoria = true
-})
-
-getgenv().mspaint_loading = false
+getgenv().mspain_t_loading = false

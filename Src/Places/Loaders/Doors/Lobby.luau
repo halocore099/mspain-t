@@ -168,4 +168,4 @@ shared.Connect:GiveSignal(shared.LocalPlayer.CharacterAdded:Connect(function(new
     task.delay(1, Script.Functions.SetupCharacterConnection, newCharacter)
 end))
 
-getgenv().mspaint_loaded = true
+getgenv().mspain_t_loaded = true

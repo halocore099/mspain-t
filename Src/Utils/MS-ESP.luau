@@ -204,7 +204,7 @@ local RunService = getService("RunService");
 local UserInputService = getService("UserInputService");
 
 -- // Variables // --
--- mspain`t patch: original check `typeof(Drawing) == "table"` was too loose —
+-- mspain-t patch: original check `typeof(Drawing) == "table"` was too loose —
 -- Macsploit exposes Drawing as a table but without a callable `.new`, so the
 -- noDrawing fallback never kicked in and Tracer crashed at `DrawingLib.new`.
 -- Require `.new` to actually be a function before treating Drawing as real.
@@ -287,7 +287,7 @@ local function createInstance(instanceType, properties)
     return instance;
 end
 
-local function distanceFromCharacter(position, getPositionFromCamera) -- // mspaint.lua (line 1240) // --
+local function distanceFromCharacter(position, getPositionFromCamera) -- // mspain-t.lua (line 1240) // --
     if typeof(position) == "Instance" then position = position:GetPivot().Position; end;
 
     if getPositionFromCamera == true and camera then

@@ -1,43 +1,43 @@
 -- Addons
-if getgenv().mspaint_disable_addons or getgenv().mspaint_addons_activated then 
+if getgenv().mspain_t_disable_addons or getgenv().mspain_t_addons_activated then 
     return {}
 end
 
 task.spawn(function()
     if not wax.shared.ExecutorSupport["_SupportsFileSystem"] then
-        warn("[mspaint] Your executor doesn't support the FileSystem API. Addons will not work.")
+        warn("[mspain-t] Your executor doesn't support the FileSystem API. Addons will not work.")
         return
     end
 
-    getgenv().mspaint_addons_activated = true
+    getgenv().mspain_t_addons_activated = true
 
-    if not isfolder("mspaint/addons") then
-        print("[mspaint] Addons folder doesn't exist. Creating...")
-        makefolder("mspaint/addons")
+    if not isfolder("mspain-t/addons") then
+        print("[mspain-t] Addons folder doesn't exist. Creating...")
+        makefolder("mspain-t/addons")
         return
     end
     
-    repeat task.wait() until getgenv().mspaint_loaded == true
-    print("[mspaint] Loading addons...")
+    repeat task.wait() until getgenv().mspain_t_loaded == true
+    print("[mspain-t] Loading addons...")
     
     local function AddAddonElement(LinoriaElement, AddonName, Element)
         if not LinoriaElement then
-            warn("[mspaint] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid Linoria element.")
+            warn("[mspain-t] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid Linoria element.")
             return
         end
 
         if typeof(Element) ~= "table" then
-            warn("[mspaint] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid data.")
+            warn("[mspain-t] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid data.")
             return
         end 
 
         if typeof(Element.Type) ~= "string" then 
-            warn("[mspaint] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid name.")
+            warn("[mspain-t] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid name.")
             return 
         end
 
         if typeof(AddonName) ~= "string" then 
-            warn("[mspaint] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid addon name.")
+            warn("[mspain-t] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid addon name.")
             return 
         end
 
@@ -54,7 +54,7 @@ task.spawn(function()
         end
 
         if typeof(Element.Name) ~= "string" then 
-            warn("[mspaint] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid name.")
+            warn("[mspain-t] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid name.")
             return 
         end
 
@@ -93,7 +93,7 @@ task.spawn(function()
             end
         end
 
-        warn("[mspaint] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid element type.")
+        warn("[mspain-t] Element '" .. tostring(Element.Name) .. " (" .. tostring(Element.Type) .. ")' didn't load: Invalid element type.")
         return
     end
     
@@ -107,15 +107,15 @@ task.spawn(function()
         AddonTab:UpdateWarningBox({
             Visible = true,
             Title = "WARNING",
-            Text =  (if not hasAddons then "Your addons FOLDER is empty!" else "This tab is for UN-OFFICIAL addons made for mspaint. We are not responsible for what addons you will use. You are putting yourself AT RISK since you are executing third-party scripts.")
+            Text =  (if not hasAddons then "Your addons FOLDER is empty!" else "This tab is for UN-OFFICIAL addons made for mspain-t. We are not responsible for what addons you will use. You are putting yourself AT RISK since you are executing third-party scripts.")
         })
     end
 
     local containAddonsLoaded = false
     createAddonTab(false)
     
-    for _, file in pairs(listfiles("mspaint/addons")) do
-        print("[mspaint] Loading addon '" .. string.gsub(file, "mspaint/addons/", "") .. "'...")
+    for _, file in pairs(listfiles("mspain-t/addons")) do
+        print("[mspain-t] Loading addon '" .. string.gsub(file, "mspain-t/addons/", "") .. "'...")
         if file:sub(#file - 3) ~= ".lua" and file:sub(#file - 4) ~= ".luau" and file:sub(#file - 7) ~= ".lua.txt" then continue end
         
         local success, errorMessage = pcall(function()
@@ -123,13 +123,13 @@ task.spawn(function()
             local addon = loadstring(fileContent)()
 
             if typeof(addon.Name) ~= "string" or typeof(addon.Elements) ~= "table" then
-                warn("Addon '" .. string.gsub(file, "mspaint/addons/", "") .. "' didn't load: Invalid Name/Elements.")
+                warn("Addon '" .. string.gsub(file, "mspain-t/addons/", "") .. "' didn't load: Invalid Name/Elements.")
                 return 
             end
 
             if typeof(addon.Game) == "string" then
                 if string.lower(addon.Game) ~= string.lower(shared.ScriptLoader) and addon.Game ~= "*" then
-                    warn("Addon '" .. string.gsub(file, "mspaint/addons/", "") .. "' didn't load: Wrong game.")
+                    warn("Addon '" .. string.gsub(file, "mspain-t/addons/", "") .. "' didn't load: Wrong game.")
                     return
                 end
             elseif typeof(addon.Game) == "table" then
@@ -138,11 +138,11 @@ task.spawn(function()
                 end
 
                 if not table.find(addon.Game, string.lower(shared.ScriptLoader)) then
-                    warn("Addon '" .. string.gsub(file, "mspaint/addons/", "") .. "' didn't load: Wrong game.")
+                    warn("Addon '" .. string.gsub(file, "mspain-t/addons/", "") .. "' didn't load: Wrong game.")
                     return
                 end
             else
-                warn("Addon '" .. string.gsub(file, "mspaint/addons/", "") .. "' didn't load: Invalid GameId.")
+                warn("Addon '" .. string.gsub(file, "mspain-t/addons/", "") .. "' didn't load: Invalid GameId.")
                 return
             end
 
@@ -173,7 +173,7 @@ task.spawn(function()
         end)
 
         if not success then
-            warn("[mspaint] Failed to load addon '" .. string.gsub(file, "mspaint/addons/", "") .. "':", errorMessage)
+            warn("[mspain-t] Failed to load addon '" .. string.gsub(file, "mspain-t/addons/", "") .. "':", errorMessage)
         else
             containAddonsLoaded = true
         end

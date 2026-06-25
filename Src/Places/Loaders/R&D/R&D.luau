@@ -28,13 +28,13 @@ Script.EntityNames = {
 
 Script.CurrentAmbient = shared.Lighting.Ambient
 
-Script._mspaint_custom_captions = Instance.new("ScreenGui") do
-    local Frame = Instance.new("Frame", Script._mspaint_custom_captions)
+Script._mspain_t_custom_captions = Instance.new("ScreenGui") do
+    local Frame = Instance.new("Frame", Script._mspain_t_custom_captions)
     local TextLabel = Instance.new("TextLabel", Frame)
     local UITextSizeConstraint = Instance.new("UITextSizeConstraint", TextLabel)
 
-    Script._mspaint_custom_captions.Parent = shared.ReplicatedStorage
-    Script._mspaint_custom_captions.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    Script._mspain_t_custom_captions.Parent = shared.ReplicatedStorage
+    Script._mspain_t_custom_captions.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     Frame.AnchorPoint = Vector2.new(0.5, 0.5)
     Frame.BackgroundColor3 = shared.Library.MainColor
@@ -65,20 +65,20 @@ Script._mspaint_custom_captions = Instance.new("ScreenGui") do
     UITextSizeConstraint.MaxTextSize = 35
 
     function Script.Functions.HideCaptions()
-        Script._mspaint_custom_captions.Parent = shared.ReplicatedStorage
+        Script._mspain_t_custom_captions.Parent = shared.ReplicatedStorage
     end
 
     local CaptionsLastUsed = os.time()
     function Script.Functions.Captions(caption: string)
         CaptionsLastUsed = os.time()
 
-        if Script._mspaint_custom_captions.Parent == shared.ReplicatedStorage then
+        if Script._mspain_t_custom_captions.Parent == shared.ReplicatedStorage then
             local success = pcall(function()
-                Script._mspaint_custom_captions.Parent = if gethui then gethui() else shared.CoreGui
+                Script._mspain_t_custom_captions.Parent = if gethui then gethui() else shared.CoreGui
             end)
 
             if not success then
-                Script._mspaint_custom_captions.Parent = shared.PlayerGui
+                Script._mspain_t_custom_captions.Parent = shared.PlayerGui
             end 
         end
         
@@ -233,4 +233,4 @@ shared.Library:OnUnload(function()
     print("Unloading " .. shared.ScriptName .. "...")
 end)
 
-getgenv().mspaint_loaded = true
+getgenv().mspain_t_loaded = true

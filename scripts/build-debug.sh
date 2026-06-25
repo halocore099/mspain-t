@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Debug bundle: readable, _G.DEBUG = true, source line numbers preserved.
 # Also copies the bundle into the Macsploit Workspace for fast iteration.
-# Output: Distribution/Script.luau, ~/Documents/Macsploit Workspace/mspaint-t.luau
+# Output: Distribution/Script.luau, ~/Documents/Macsploit Workspace/mspain-t.luau
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -19,6 +19,6 @@ export PATH="$ROKIT_BIN:$PATH"
 
 MACSPLOIT_WS="$HOME/Documents/Macsploit Workspace"
 if [[ -d "$MACSPLOIT_WS" ]]; then
-    cp Distribution/Script.luau "$MACSPLOIT_WS/mspaint-t.luau"
-    echo "Copied to $MACSPLOIT_WS/mspaint-t.luau"
+    cp Distribution/Script.luau "$MACSPLOIT_WS/mspain-t.luau"
+    echo "Copied to $MACSPLOIT_WS/mspain-t.luau"
 fi
