@@ -156,4 +156,177 @@ function UICreator:CreateSettingsTab()
     return SettingsTab
 end
 
+--// Self-Test Tab (debug builds only) \\--
+local LogService = game:GetService("LogService")
+
+local function runToggleSweep(waitTime: number, onProgress: ((done: number, total: number, last: any) -> ())?)
+    local toggles = {}
+    for id, toggle in pairs(shared.Toggles) do
+        if typeof(toggle) == "table"
+            and typeof(toggle.SetValue) == "function"
+            and typeof(toggle.Value) == "boolean"
+        then
+            table.insert(toggles, { id = id, toggle = toggle })
+        end
+    end
+    table.sort(toggles, function(a, b) return a.id < b.id end)
+
+    local results = {}
+    local startTick = tick()
+
+    for i, entry in ipairs(toggles) do
+        local id, toggle = entry.id, entry.toggle
+        local label = toggle.Text or id
+        local originalValue = toggle.Value
+
+        local entryResult = { id = id, label = label }
+
+        if originalValue == true then
+            entryResult.status = "skipped"
+            entryResult.note = "already on at sweep start"
+        else
+            local captured = {}
+            local conn = LogService.MessageOut:Connect(function(msg, msgType)
+                if msgType == Enum.MessageType.MessageError
+                    or msgType == Enum.MessageType.MessageWarning
+                then
+                    table.insert(captured, string.format("[%s] %s", tostring(msgType):gsub("Enum.MessageType.Message", ""), msg))
+                end
+            end)
+
+            local setOk, setErr = pcall(function() toggle:SetValue(true) end)
+            task.wait(waitTime)
+            pcall(function() toggle:SetValue(originalValue) end)
+            conn:Disconnect()
+
+            if not setOk then
+                entryResult.status = "error"
+                entryResult.errors = { "SetValue threw: " .. tostring(setErr) }
+            elseif #captured > 0 then
+                entryResult.status = "error"
+                entryResult.errors = captured
+            else
+                entryResult.status = "ok"
+            end
+        end
+
+        table.insert(results, entryResult)
+
+        if onProgress then
+            pcall(onProgress, i, #toggles, entryResult)
+        end
+    end
+
+    return results, tick() - startTick
+end
+
+local function formatResults(results: { any }, elapsed: number): string
+    local lines = {}
+    local ok, err, skipped = 0, 0, 0
+    for _, r in ipairs(results) do
+        if r.status == "ok" then ok += 1
+        elseif r.status == "skipped" then skipped += 1
+        else err += 1
+        end
+    end
+
+    table.insert(lines, "=== mspaint-t self-test ===")
+    table.insert(lines, string.format("Game: %s   PlaceId: %d", shared.ScriptName or "?", game.PlaceId))
+    table.insert(lines, string.format("Elapsed: %.1fs   Total: %d   OK: %d   ERROR: %d   SKIPPED: %d", elapsed, #results, ok, err, skipped))
+    table.insert(lines, "")
+
+    table.insert(lines, "--- ERRORS ---")
+    for _, r in ipairs(results) do
+        if r.status == "error" then
+            table.insert(lines, string.format("[%s]  id=%s", r.label, r.id))
+            for _, e in ipairs(r.errors or {}) do
+                table.insert(lines, "    " .. e)
+            end
+        end
+    end
+
+    table.insert(lines, "")
+    table.insert(lines, "--- SKIPPED ---")
+    for _, r in ipairs(results) do
+        if r.status == "skipped" then
+            table.insert(lines, string.format("[%s]  id=%s  (%s)", r.label, r.id, r.note or ""))
+        end
+    end
+
+    table.insert(lines, "")
+    table.insert(lines, "--- OK ---")
+    for _, r in ipairs(results) do
+        if r.status == "ok" then
+            table.insert(lines, string.format("[%s]  id=%s", r.label, r.id))
+        end
+    end
+
+    return table.concat(lines, "\n")
+end
+
+function UICreator:CreateSelfTestTab()
+    local Tab = shared.Window:AddTab("Self-Test")
+
+    local ControlsGroup = Tab:AddLeftGroupbox("Controls")
+    local StatusGroup = Tab:AddRightGroupbox("Status")
+
+    ControlsGroup:AddSlider("SelfTestWait", {
+        Text = "Wait per toggle (s)",
+        Default = 0.4,
+        Min = 0.1,
+        Max = 3,
+        Rounding = 1,
+        Compact = true
+    })
+
+    local statusLabel = StatusGroup:AddLabel("Idle. Press 'Run Sweep' to test every toggle.", true)
+    local lastErrorLabel = StatusGroup:AddLabel("", true)
+
+    ControlsGroup:AddButton("Run Sweep", function()
+        statusLabel:SetText("Sweep starting...")
+        lastErrorLabel:SetText("")
+
+        task.spawn(function()
+            local waitTime = shared.Options.SelfTestWait and shared.Options.SelfTestWait.Value or 0.4
+
+            local results, elapsed = runToggleSweep(waitTime, function(done, total, last)
+                local mark = last.status == "ok" and "ok" or last.status == "skipped" and "skip" or "ERR"
+                statusLabel:SetText(string.format("%d / %d   %s: %s", done, total, mark, last.label))
+                if last.status == "error" then
+                    lastErrorLabel:SetText("Last error: " .. last.label)
+                end
+            end)
+
+            local report = formatResults(results, elapsed)
+            local filename = string.format("mspaint-t-selftest-%s.txt", os.date("%Y%m%d-%H%M%S"))
+
+            if typeof(writefile) == "function" then
+                pcall(writefile, filename, report)
+            end
+
+            local errCount = 0
+            for _, r in ipairs(results) do
+                if r.status == "error" then errCount += 1 end
+            end
+
+            statusLabel:SetText(string.format("Done. %d/%d errors. Report: %s", errCount, #results, filename))
+
+            shared.Library:Notify(string.format("Self-test done: %d errors in %d toggles. Wrote %s", errCount, #results, filename), 10)
+        end)
+    end)
+
+    ControlsGroup:AddButton("Print Toggle List", function()
+        local count = 0
+        for id, toggle in pairs(shared.Toggles) do
+            if typeof(toggle) == "table" and typeof(toggle.Value) == "boolean" then
+                count += 1
+                print(string.format("[Toggle] %s = %s   text=%q", id, tostring(toggle.Value), toggle.Text or ""))
+            end
+        end
+        shared.Library:Notify(string.format("Printed %d toggles to console", count), 5)
+    end)
+
+    return Tab
+end
+
 return UICreator

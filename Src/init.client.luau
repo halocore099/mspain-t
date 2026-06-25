@@ -133,6 +133,10 @@ if not FinishedLoading then
     UICreator:CreateTimeoutInfoTab()
 end
 
+if _G.DEBUG then
+    UICreator:CreateSelfTestTab()
+end
+
 UICreator:CreateSettingsTab()
 require("Utils/GUI/Addons")
 
