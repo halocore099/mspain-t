@@ -1,25 +1,18 @@
-# mspaint
+# mspain`t
 > [!IMPORTANT]
-> This version is deprecated. Join our Discord server at https://mspaint.cc/ to get the new version.
+> I am NOT affiliated with mspaint (hence why i am mspain`t)
 
-A decent script hub that *was* free and open source
+A decent script hub that *was* free and open source, and now being modifed by me, in progress
 
-```lua
--- THIS IS THE OLD SCRIPT, WE DO NOT ADVISE YOU USING THIS AS OVER TIME STUFF WILL GET PATCHED
-loadstring(game:HttpGet("https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua"))()
-```
-
+in the meantime, checkout the actual updated mspaint:
 **Links**:
 - [🌐 Website](https://www.mspaint.cc/)
 - [💬 Discord](https://discord.gg/mspaint)
 
-# Addons
-You can find documentation on how to create an addon here: https://docs.upio.dev/mspaint/addons/getting_started
 
-# Website
-our website is at https://www.mspaint.cc (source code here at https://github.com/notpoiu/webmspaint)
 
-## Bundling mspaint via wax
+
+## Bundling mspain`t via wax
 To bundle all the scripts, you have to follow these steps:
 
 1. Install [rokit](https://github.com/rojo-rbx/rokit) if you haven't already
