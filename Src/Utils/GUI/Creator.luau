@@ -159,6 +159,17 @@ end
 --// Self-Test Tab (debug builds only) \\--
 local LogService = game:GetService("LogService")
 
+-- Toggles whose effect can't be observed inside the sweep's wait window —
+-- they fire on external events (teleport, death, jumpscare). Enabling them
+-- briefly proves nothing AND can cause side effects later (e.g. queueing a
+-- dead loadstring URL on next teleport). Skip outright.
+local SWEEP_SKIP = {
+    ExecuteOnTeleport = "fires only on actual game-to-game teleport",
+    KeybindMenuOpen = "controls keybind UI visibility, not a feature",
+    ShowCustomCursor = "cosmetic, no testable behavior",
+    MenuKeybind = "keybind config",
+}
+
 local function runToggleSweep(waitTime: number, onProgress: ((done: number, total: number, last: any) -> ())?)
     local toggles = {}
     for id, toggle in pairs(shared.Toggles) do
@@ -181,7 +192,10 @@ local function runToggleSweep(waitTime: number, onProgress: ((done: number, tota
 
         local entryResult = { id = id, label = label }
 
-        if originalValue == true then
+        if SWEEP_SKIP[id] then
+            entryResult.status = "skipped"
+            entryResult.note = SWEEP_SKIP[id]
+        elseif originalValue == true then
             entryResult.status = "skipped"
             entryResult.note = "already on at sweep start"
         else
