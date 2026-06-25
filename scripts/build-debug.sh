@@ -10,7 +10,7 @@ export PATH="$ROKIT_BIN:$PATH"
 
 "$ROKIT_BIN/lune" run Build bundle \
     input='default.project.json' \
-    minify=false \
+    minify=true \
     output='Distribution/Script.luau' \
     env-name="Script" \
     darklua-config-path="Build/DarkLua.debug.json" \
