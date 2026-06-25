@@ -204,7 +204,11 @@ local RunService = getService("RunService");
 local UserInputService = getService("UserInputService");
 
 -- // Variables // --
-local DrawingLib = typeof(Drawing) == "table" and Drawing or { noDrawing = true };
+-- mspain`t patch: original check `typeof(Drawing) == "table"` was too loose —
+-- Macsploit exposes Drawing as a table but without a callable `.new`, so the
+-- noDrawing fallback never kicked in and Tracer crashed at `DrawingLib.new`.
+-- Require `.new` to actually be a function before treating Drawing as real.
+local DrawingLib = (typeof(Drawing) == "table" and typeof(Drawing.new) == "function") and Drawing or { noDrawing = true };
 
 local localPlayer = Players.LocalPlayer;
 local character;
