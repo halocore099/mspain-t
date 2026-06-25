@@ -3,7 +3,7 @@ local UICreator = {}
 local ThemeManager
 
 if _G.UI == "Rayfield" then
-    local RayfieldAdapter = require("Utils/GUI/RayfieldAdapter")
+    local RayfieldAdapter = require("RayfieldAdapter")
     shared.Library, shared.SaveManager, ThemeManager = RayfieldAdapter.bootstrap()
     -- shared.Toggles / shared.Options are populated by adapter widget builders
 else
@@ -32,7 +32,8 @@ function UICreator:CreateWindow()
         NotifySide = "Right",
         ShowCustomCursor = true,
         TabPadding = 2,
-        MenuFadeTime = 0
+        MenuFadeTime = 0,
+        Size = UDim2.fromOffset(670, 400)
     })
 
     --// Notificatins \\--
